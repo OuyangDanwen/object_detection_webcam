@@ -1,4 +1,4 @@
-# object_detectiopn_webcam
+# object_detection_webcam
 A simple object detection app on webcam stream using tensorflow.
 
 Requirements:
