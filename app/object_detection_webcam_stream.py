@@ -10,7 +10,6 @@ import zipfile
 
 from collections import defaultdict
 from io import StringIO
-from IPython import get_ipython
 import cv2
 
 from utility import WebcamVideoStream
