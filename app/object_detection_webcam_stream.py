@@ -50,16 +50,28 @@ from object_detection.utils import visualization_utils as vis_util
 
 
 # What model to download.
-MODEL_NAME = 'models/research/object_detection/ssd_mobilenet_v1_coco_2017_11_17'
+MODEL_FILE = 'ssd_mobilenet_v1_coco_2017_11_17.tar.gz'
+DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
-PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
+PATH_TO_CKPT = 'models/research/object_detection/ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join('models/research/object_detection/data', 'mscoco_label_map.pbtxt')
+PATH_TO_LABELS = 'models/research/object_detection/data/mscoco_label_map.pbtxt'
+PATH_TO_DOWNLOADED_MODEL = 'models/research/object_detection/ssd_mobilenet_v1_coco_2017_11_17.tar.gz'
 
 NUM_CLASSES = 90
 
+
+# ## Download Model
+
+opener = urllib.request.URLopener()
+opener.retrieve(DOWNLOAD_BASE + MODEL_FILE, PATH_TO_DOWNLOADED_MODEL)
+tar_file = tarfile.open(PATH_TO_DOWNLOADED_MODEL)
+for file in tar_file.getmembers():
+  file_name = os.path.basename(file.name)
+  if 'frozen_inference_graph.pb' in file_name:
+    tar_file.extract(file, 'models/research/object_detection/')
 
 # ## Load a (frozen) Tensorflow model into memory.
 
@@ -84,7 +96,6 @@ category_index = label_map_util.create_category_index(categories)
 
 
 # # Detection
-
 
 def run_inference_for_single_image(image):
   with detection_graph.as_default():
